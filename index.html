@@ -33,7 +33,7 @@
   .chip span i{font-style:normal;color:var(--dim);font-size:12px;margin-left:5px}
   .chip input:checked + span{background:var(--accent);border-color:var(--accent);color:#1b1200;font-weight:600}
   .chip input:checked + span i{color:#6b4a1c}
-  .chip input:disabled + span{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+  .chip input:disabled + span{opacity:.35;cursor:not-allowed}
   label.f{display:block;font-size:13px;color:var(--dim);margin:0 0 5px}
   input[type=text],input[type=number]{
     width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
@@ -57,6 +57,11 @@
   .err.on{display:block}
   .ok{color:var(--ok);font-size:14px;margin-top:10px;display:none}
   .ok.on{display:block}
+  .onay{display:none;margin-top:14px;background:#2a2130;border:1px solid var(--accent);
+        border-radius:12px;padding:16px 16px 6px}
+  .onay.on{display:block}
+  .onay b{display:block;color:var(--accent);font-size:15px;margin-bottom:6px}
+  .onay p{margin:0 0 12px;font-size:14px;color:var(--ink)}
   .foot{color:var(--dim);font-size:12px;margin-top:26px;text-align:center}
   .count{font-size:12px;color:var(--dim);margin-top:7px}
   .gl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);
@@ -105,21 +110,21 @@
 
   <div class="card" id="k-mood">
     <h2>Ruh hâli</h2>
-    <p class="hint">En fazla 5 tane. Seçtiklerinden <em>herhangi biri</em> uyan parçalar listeye girer.</p>
+    <p class="hint">En fazla 5 tane. Seçtiklerinden <em>herhangi biri</em> uyan parçalar listeye girer. Her parçanın tek bir ruh hâli var, o yüzden bu sayılar toplandığında kütüphanenin tamamını verir.</p>
     <div class="chips" id="g-mood"></div>
     <div class="count" id="c-mood"></div>
   </div>
 
   <div class="card" id="k-islev">
     <h2>Ne için dinlenecek</h2>
-    <p class="hint">Parçanın işlevi. En fazla 4 tane.</p>
+    <p class="hint">Parçanın işlevi. En fazla 4 tane. Bir parçaya birden çok işlev verilmiş olabilir &mdash; bu yüzden sayılar toplandığında kütüphanenin tamamını aşar, bu normal.</p>
     <div class="chips" id="g-islev"></div>
     <div class="count" id="c-islev"></div>
   </div>
 
   <div class="card" id="k-bolge">
     <h2>Bölge</h2>
-    <p class="hint">Coğrafya. En fazla 5 tane.</p>
+    <p class="hint">Coğrafya. En fazla 5 tane. Bir parça birden çok bölgeye ait olabilir (ortak projeler, göç, füzyon) &mdash; sayılar bu yüzden toplandığında kütüphanenin tamamını aşar.</p>
     <div class="chips" id="g-bolge"></div>
     <div class="count" id="c-bolge"></div>
   </div>
@@ -146,6 +151,15 @@
   </div>
   <div class="err" id="err"></div>
   <div class="ok" id="ok"></div>
+
+  <div class="onay" id="onay">
+    <b id="onayBas"></b>
+    <p id="onayMetin"></p>
+    <div class="btnrow">
+      <button class="primary" id="btnKabul">Tamam, kabul ediyorum</button>
+      <button class="ghost" id="btnGeri">Geri dön, filtreyi değiştireceğim</button>
+    </div>
+  </div>
 
   <div class="out" id="out">
     <div class="card" style="margin-top:16px">
@@ -259,7 +273,12 @@ function say(sec){
   }
   return n;
 }
-function secimKur(fazla){
+/* degistir = {boyut, deger} verilirse O BOYUT yalnzca o degerle degistirilir.
+   Boylece her secenegin yanindaki rakam "diger filtreler sabitken yalniz bu
+   secenek isaretliyse kac parca kalir" anlamina gelir. Kardes secenekler
+   isaretlendikce rakam ZIPLAMAZ — kumulatif olsa buyuyup kafa karistiriyordu
+   (2026-08-30, kullanici geri bildirimi). */
+function secimKur(degistir){
   var s = {};
   s[0] = kucult(secilenler("g-bolge"));
   s[1] = kucult(secilenler("g-tur"));
@@ -267,9 +286,9 @@ function secimKur(fazla){
   s[3] = kucult(secilenler("g-islev"));
   var dv = document.getElementById("detay").value.trim();
   s[4] = dv === "" ? [] : kucult(esanlam(dv));
-  if (fazla) {
-    var a = ALAN[fazla.boyut];
-    s[a] = s[a].concat([fazla.deger.toLowerCase()]);
+  if (degistir) {
+    if (degistir.boyut === "detay") s[4] = kucult(esanlam(degistir.deger));
+    else s[ALAN[degistir.boyut]] = [degistir.deger.toLowerCase()];
   }
   return s;
 }
@@ -338,6 +357,9 @@ function kurOrnekler(){
    -------------------------------------------------------------------------- */
 function guncelle(){
   var n = istenen();
+  /* Filtre degisti — bekleyen onay artik gecersiz, paneli kapat. */
+  var op = document.getElementById("onay");
+  if (op) op.className = "onay";
 
   /* boyut içi üst sınır */
   ["mood","islev","bolge","tur"].forEach(function(k){
@@ -360,20 +382,21 @@ function guncelle(){
 
   var toplam = say(secimKur(null));
 
-  /* seçenek başına sayı + kilit */
+  /* seçenek başına sayı */
   ["mood","islev","bolge","tur"].forEach(function(k){
     var sec = secilenler("g-"+k), dolu = sec.length >= SINIR[k];
     Array.prototype.slice.call(document.querySelectorAll("#g-"+k+" input")).forEach(function(x){
       var et = x.nextSibling.querySelector("i");
-      if (x.checked) { et.textContent = ""; x.disabled = false; return; }
-      var s = say(secimKur({ boyut:k, deger:x.value }));
-      et.textContent = s;
-      x.disabled = (dolu) || (s < n);
+      /* Sayim engellemez — yalniz bilgilendirir. Az sonuc veren secenek
+         KAPATILMAZ; kisi ustune baska secenek ekleyebilir. Uyari, Kopyala
+         aninda tek seferde sorulur. */
+      et.textContent = say(secimKur({ boyut:k, deger:x.value }));
+      x.disabled = dolu && !x.checked;
     });
     var c = document.getElementById("c-"+k);
-    c.textContent = sec.length === 0
-      ? "Hiçbiri seçili değil — fark etmez sayılacak. Rakamlar: o seçeneği eklersen kaç parça kalır."
-      : sec.length + " seçili" + (dolu ? " (üst sınır)" : "");
+    c.textContent = (sec.length === 0 ? "Hiçbiri seçili değil — fark etmez sayılacak. " : sec.length + " seçili. ")
+      + (dolu ? "Üst sınıra ulaştın, kalanlar kapandı. " : "")
+      + "Rakamlar: diğer filtreler aynı kalırsa yalnız o seçenek işaretliyken kaç parça uyar.";
   });
 
   /* Detay Tarz */
@@ -390,16 +413,13 @@ function guncelle(){
                : s + " parça uyuyor.")
         + (bicim.length > 1 ? " (aranan biçimler: " + bicim.join(", ") + ")" : "");
     cd.style.color = (s < n) ? "#ff8a80" : "";
+    /* Bu bir ENGEL degil: kisi devam edebilir, Kopyala aninda onay sorulur. */
   }
   Array.prototype.slice.call(document.getElementById("ornekler").children).forEach(function(b){
     var v = b.getAttribute("data-v");
     b.className = (v === alan.value) ? "ornek sec" : "ornek";
     if (v === alan.value) { b.querySelector("i").textContent = ""; }
-    else {
-      var s2 = {}; var t = secimKur(null);
-      s2[0]=t[0]; s2[1]=t[1]; s2[2]=t[2]; s2[3]=t[3]; s2[4]=kucult(esanlam(v));
-      b.querySelector("i").textContent = say(s2);
-    }
+    else b.querySelector("i").textContent = say(secimKur({ boyut:"detay", deger:v }));
   });
 
   /* sayaç */
@@ -490,7 +510,13 @@ function hazirla(){
   return y;
 }
 
-document.getElementById("btnKopya").onclick = function(){
+/* --------------------------------------------------------------------------
+   Kopyalama — sonuc istenen sayidan azsa ONCE onay sorulur.
+   Onay ayri bir tiklamayla veriliyor; bu ayni zamanda panoya yazma icin
+   TAZE bir kullanici hareketi saglar (bazi tarayicilar hareket olmadan
+   panoya yazmayi engelliyor).
+   -------------------------------------------------------------------------- */
+function kopyala(){
   var y = hazirla(); if (!y) return;
   var metin = mesajKur(y);
   function yedek(){
@@ -505,6 +531,38 @@ document.getElementById("btnKopya").onclick = function(){
     navigator.clipboard.writeText(metin).then(
       function(){ basari("Kopyalandı — şimdi bana gönder."); }, yedek);
   } else { yedek(); }
+}
+function onayKapat(){ document.getElementById("onay").className = "onay"; }
+
+document.getElementById("btnKopya").onclick = function(){
+  var ad = document.getElementById("ad").value.trim();
+  if (!ad) { hata("Adını yazmadan gönderemem — listeyi kime hazırladığımı bilmem lazım."); return; }
+  hata(null);
+  var n = istenen();
+  if (VERI_VAR) {
+    var t = say(secimKur(null));
+    if (t < n) {
+      document.getElementById("onayBas").textContent =
+        t === 0 ? "Bu filtreyle hiç parça yok" : "Seçimin " + n + " parçayı doldurmuyor";
+      document.getElementById("onayMetin").textContent =
+        t === 0
+          ? "Seçtiğin filtrelerin hepsine birden uyan parça bulunmuyor, dolayısıyla liste boş çıkar. Filtrelerden birini kaldırırsan havuz genişler."
+          : n + " parça istedin ama seçimine yalnız " + t + " parça uyuyor — liste "
+            + t + " parçalık olur. Kabul ediyorsan gönderebilirsin; istemiyorsan geri dönüp "
+            + "bir filtreyi kaldır ya da parça sayısını düşür.";
+      document.getElementById("out").className = "out";
+      document.getElementById("ok").className = "ok";
+      document.getElementById("onay").className = "onay on";
+      return;
+    }
+  }
+  onayKapat();
+  kopyala();
+};
+document.getElementById("btnKabul").onclick = function(){ onayKapat(); kopyala(); };
+document.getElementById("btnGeri").onclick = function(){
+  onayKapat();
+  window.scrollTo({top:0,behavior:"smooth"});
 };
 document.getElementById("btnSifirla").onclick = function(){
   Array.prototype.slice.call(document.querySelectorAll("input[type=checkbox]"))
@@ -513,6 +571,7 @@ document.getElementById("btnSifirla").onclick = function(){
   document.getElementById("maks").value=15;
   document.getElementById("out").className="out";
   hata(null); document.getElementById("ok").className="ok";
+  onayKapat();
   guncelle();
   window.scrollTo({top:0,behavior:"smooth"});
 };
