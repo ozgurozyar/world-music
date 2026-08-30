@@ -22,7 +22,6 @@
   h1{font-size:26px;margin:0 0 6px;letter-spacing:-.01em}
   .sub{color:var(--dim);margin:0 0 18px;font-size:14px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;margin:0 0 16px}
-  .card.kilit{opacity:.5}
   .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 4px}
   .hint{color:var(--dim);font-size:13px;margin:0 0 14px}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -31,16 +30,15 @@
   .chip span{display:inline-block;padding:7px 12px;border:1px solid var(--line);border-radius:999px;
              background:var(--panel2);cursor:pointer;font-size:14px;user-select:none;transition:.12s}
   .chip span:hover{border-color:#4b5270}
+  .chip span i{font-style:normal;color:var(--dim);font-size:12px;margin-left:5px}
   .chip input:checked + span{background:var(--accent);border-color:var(--accent);color:#1b1200;font-weight:600}
-  .chip input:disabled + span{opacity:.35;cursor:not-allowed}
+  .chip input:checked + span i{color:#6b4a1c}
+  .chip input:disabled + span{opacity:.3;cursor:not-allowed;text-decoration:line-through}
   label.f{display:block;font-size:13px;color:var(--dim);margin:0 0 5px}
   input[type=text],input[type=number]{
     width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:9px;padding:9px 11px;font:inherit}
   input:focus{outline:none;border-color:var(--accent)}
-  input:disabled{opacity:.4;cursor:not-allowed}
-  .range{display:flex;align-items:center;gap:9px}
-  .range span{color:var(--dim);font-size:13px}
   .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
   button{font:inherit;border-radius:10px;padding:13px 20px;cursor:pointer;border:1px solid transparent;font-weight:600}
   .primary{background:var(--ok);color:#04240f;font-size:16px}
@@ -69,26 +67,30 @@
          border-radius:999px;padding:4px 10px;cursor:pointer;user-select:none;transition:.12s}
   .ornek:hover{color:var(--ink);border-color:var(--accent);border-style:solid}
   .ornek.sec{color:#1b1200;background:var(--accent);border-color:var(--accent);border-style:solid;font-weight:600}
+  .ornek i{font-style:normal;opacity:.75;font-size:12px;margin-left:4px}
   .ornekbas{font-size:12px;color:var(--dim);margin-top:11px}
-  .butce{position:sticky;top:0;z-index:5;background:var(--panel2);border:1px solid var(--line);
-         border-radius:10px;padding:11px 14px;margin:0 0 18px;font-size:14px;font-weight:600}
-  .butce .bar{display:block;height:5px;border-radius:3px;background:#2d3243;margin-top:8px;overflow:hidden}
-  .butce .bar i{display:block;height:100%;background:var(--ok);transition:width .15s}
-  .butce.dolu{border-color:var(--accent);color:var(--accent)}
-  .butce.dolu .bar i{background:var(--accent)}
-  .butce small{display:block;font-weight:400;color:var(--dim);font-size:12px;margin-top:6px}
+  .sayac{position:sticky;top:0;z-index:5;background:var(--panel2);border:1px solid var(--line);
+         border-radius:10px;padding:12px 14px;margin:0 0 18px}
+  .sayac .buyuk{font-size:20px;font-weight:700}
+  .sayac .bar{display:block;height:5px;border-radius:3px;background:#2d3243;margin-top:9px;overflow:hidden}
+  .sayac .bar i{display:block;height:100%;background:var(--ok);transition:width .18s}
+  .sayac small{display:block;font-weight:400;color:var(--dim);font-size:12px;margin-top:7px}
+  .sayac.az{border-color:var(--warn)}
+  .sayac.az .buyuk{color:var(--warn)}
+  .sayac.az .bar i{background:var(--warn)}
+  .sayac.yok{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <h1>Dünya Müziği Seçkisi — Liste Talebi</h1>
-  <p class="sub">Nasıl bir liste istediğini seç, sonra çıktıyı kopyalayıp bana gönder. Boş bıraktığın her alan &ldquo;fark etmez&rdquo; demektir — ne kadar az filtre uygularsan o kadar geniş bir havuzdan seçilir. Sana özel Playlist'in Spotify linki olarak iletilecek.</p>
+  <p class="sub">Nasıl bir liste istediğini seç, sonra çıktıyı kopyalayıp bana gönder. Boş bıraktığın her alan &ldquo;fark etmez&rdquo; demektir. Seçim yaptıkça kaç parçanın uyduğunu yukarıda canlı görürsün. Sana özel Playlist'in Spotify linki olarak iletilecek.</p>
 
-  <div class="butce" id="butce">
-    Filtre bütçesi: 0 / 3
+  <div class="sayac yok" id="sayac">
+    <span class="buyuk" id="sayacBuyuk">—</span>
     <span class="bar"><i style="width:0%"></i></span>
-    <small>Çok fazla filtre listeyi boşaltır. Bütçe dolduğunda kalan filtreler kilitlenir.</small>
+    <small id="sayacAlt"></small>
   </div>
 
   <div class="card">
@@ -102,46 +104,36 @@
   </div>
 
   <div class="card" id="k-mood">
-    <h2>Ruh hâli <span style="opacity:.6;font-weight:400">· 1 puan</span></h2>
+    <h2>Ruh hâli</h2>
     <p class="hint">En fazla 5 tane. Seçtiklerinden <em>herhangi biri</em> uyan parçalar listeye girer.</p>
     <div class="chips" id="g-mood"></div>
     <div class="count" id="c-mood"></div>
   </div>
 
   <div class="card" id="k-islev">
-    <h2>Ne için dinlenecek <span style="opacity:.6;font-weight:400">· 1 puan</span></h2>
+    <h2>Ne için dinlenecek</h2>
     <p class="hint">Parçanın işlevi. En fazla 4 tane.</p>
     <div class="chips" id="g-islev"></div>
     <div class="count" id="c-islev"></div>
   </div>
 
   <div class="card" id="k-bolge">
-    <h2>Bölge <span style="opacity:.6;font-weight:400">· 1 puan</span></h2>
+    <h2>Bölge</h2>
     <p class="hint">Coğrafya. En fazla 5 tane.</p>
     <div class="chips" id="g-bolge"></div>
     <div class="count" id="c-bolge"></div>
   </div>
 
   <div class="card" id="k-tur">
-    <h2>Ana tür <span style="opacity:.6;font-weight:400">· 1 puan</span></h2>
+    <h2>Ana tür</h2>
     <p class="hint">Kaba tür ayrımı. En fazla 5 tane.</p>
     <div class="chips" id="g-tur"></div>
     <div class="count" id="c-tur"></div>
   </div>
 
-  <div class="card" id="k-tempo">
-    <h2>Tempo <span style="opacity:.6;font-weight:400">· 1 puan</span></h2>
-    <p class="hint">BPM cinsinden — koşu 150–180, hızlı yürüyüş 110–140. Dokunmazsan puan harcamaz.</p>
-    <div class="range">
-      <input type="number" id="tpMin" value="0" min="0" max="300"><span>—</span>
-      <input type="number" id="tpMax" value="300" min="0" max="300">
-    </div>
-    <div class="count" id="c-tempo"></div>
-  </div>
-
   <div class="card" id="k-detay">
-    <h2>Çok özel bir tarz <span style="opacity:.6;font-weight:400">· 2 puan</span></h2>
-    <p class="hint">En daraltıcı filtre bu — tek başına neredeyse üç filtre kadar kısıtlıyor, o yüzden 2 puan.</p>
+    <h2>Çok özel bir tarz</h2>
+    <p class="hint">En daraltıcı filtre bu. Türkçe ya da İngilizce yazabilirsin &mdash; &ldquo;Caz&rdquo; ile &ldquo;Jazz&rdquo; aynı sonucu verir.</p>
     <input type="text" id="detay" placeholder="Örn. Klezmer">
     <div class="ornekbas">Kütüphanede karşılığı olan tarzlar — dokunarak seçebilirsin:</div>
     <div class="ornekler" id="ornekler"></div>
@@ -165,12 +157,13 @@
     </div>
   </div>
 
-  <p class="foot">Dünya Müziği Seçkisi · kişisel müzik kütüphanesi</p>
+  <p class="foot" id="foot">Dünya Müziği Seçkisi · kişisel müzik kütüphanesi</p>
 </div>
 
+<script src="data.js"></script>
 <script>
 /* ==========================================================================
-   KAPALI LİSTELER — Taxonomy sekmesinden alındı. Excel ile aynı kalmalı.
+   KAPALI LİSTELER — Taxonomy sekmesinden. Excel ile aynı kalmalı.
    ========================================================================== */
 var L = {
   mood:  ["Dinginlik","Epik","Karanlık","Melankoli","Neşe","Romantik"],
@@ -194,22 +187,92 @@ var BOLGE_GRUP = [
 BOLGE_GRUP.forEach(function(g){ g[1].forEach(function(v){ L.bolge.push(v); }); });
 
 var SINIR = { mood:5, islev:4, bolge:5, tur:5 };
-
-/* ==========================================================================
-   FİLTRE BÜTÇESİ — 2.332 parça üzerinde 4.000 rastgele sorguyla ölçüldü:
-     1 filtre → ortanca 392 sonuç      4 filtre → ortanca 0, %51 boş
-     2 filtre → ortanca  52            5 filtre → %79 boş
-     3 filtre → ortanca   6            6 filtre → %95 boş
-   Detay Tarz diğerlerinden bir kat seçici — bu yüzden 2 puan.
-   ========================================================================== */
-var PUAN  = { mood:1, islev:1, bolge:1, tur:1, tempo:1, detay:2 };
-var BUTCE = 3;
+var ALAN  = { bolge:0, tur:1, mood:2, islev:3 };
 var IMZA  = "#OW1";
 var MAKS_PARCA = 50;
 
 var ORNEKLER = ["Çöl Blues","Balkan Brass","Klezmer","Bluegrass","Tuareg Rock","Assouf",
                 "Ethio-Jazz","Cumbia","Gypsy Jazz","Reggae","Ney","Flamenko","Rebetiko",
                 "Gnawa","Fado","Morna","Highlife"];
+
+/* ==========================================================================
+   VERİ DİLİMİ — data.js'ten. Yoksa sayfa sayaçsız ama çalışır durumda kalır.
+   ========================================================================== */
+var VERI = [], GRUPLAR = [], VERI_VAR = false, VERI_TARIH = "";
+(function(){
+  try {
+    if (typeof OW_ROWS !== "string") return;
+    var ham = OW_ROWS.split("\n");
+    for (var i=0;i<ham.length;i++){
+      var s = ham[i].trim();
+      if (s === "" || s.indexOf("/*") === 0) continue;
+      var p = s.split("|");
+      if (p.length < 5) continue;
+      VERI.push([p[0].toLowerCase(), p[1].toLowerCase(), p[2].toLowerCase(),
+                 p[3].toLowerCase(), p[4].toLowerCase()]);
+    }
+    if (typeof OW_SYN === "string") {
+      var hg = OW_SYN.split("\n");
+      for (var j=0;j<hg.length;j++){
+        var g = hg[j].trim();
+        if (g === "" || g.indexOf("/*") === 0) continue;
+        GRUPLAR.push(g);
+      }
+    }
+    if (typeof OW_TARIH === "string") VERI_TARIH = OW_TARIH;
+    VERI_VAR = VERI.length > 0;
+  } catch(e){ VERI_VAR = false; }
+})();
+
+/* ==========================================================================
+   FİLTRE MOTORU — Ozgur_World!AV formülünün birebir karşılığı.
+   Eşleştirme EŞİTLİK DEĞİL, alt dizgi ve harf duyarsız (Excel'de SEARCH).
+   Boyut içinde VEYA, boyutlar arası VE. Boş boyut geçer.
+   2026-08-30'da 160 rastgele bileşimde Excel'e karşı sınandı: 160/160.
+   ========================================================================== */
+function bol(s){
+  return (s+"").split(";").map(function(t){ return t.trim(); })
+               .filter(function(t){ return t !== ""; }).slice(0,7);
+}
+function esanlam(terim){
+  var ara = (";"+terim+";").toLowerCase();
+  for (var i=0;i<GRUPLAR.length;i++){
+    if ((";"+GRUPLAR[i]+";").toLowerCase().indexOf(ara) >= 0) return bol(GRUPLAR[i]);
+  }
+  return [terim.trim()];
+}
+function kucult(a){ return a.map(function(t){ return t.toLowerCase(); }); }
+function esle(terimler, alan){
+  for (var i=0;i<terimler.length;i++) if (alan.indexOf(terimler[i]) >= 0) return true;
+  return false;
+}
+/* sec = {0:[bolge],1:[tur],2:[mood],3:[islev],4:[detay bicimleri]} — küçük harfli */
+function say(sec){
+  var n = 0, k = [0,1,2,3,4], i, d, r, gec;
+  for (i=0;i<VERI.length;i++){
+    r = VERI[i]; gec = true;
+    for (d=0;d<5;d++){
+      var t = sec[k[d]];
+      if (t && t.length && !esle(t, r[k[d]])) { gec = false; break; }
+    }
+    if (gec) n++;
+  }
+  return n;
+}
+function secimKur(fazla){
+  var s = {};
+  s[0] = kucult(secilenler("g-bolge"));
+  s[1] = kucult(secilenler("g-tur"));
+  s[2] = kucult(secilenler("g-mood"));
+  s[3] = kucult(secilenler("g-islev"));
+  var dv = document.getElementById("detay").value.trim();
+  s[4] = dv === "" ? [] : kucult(esanlam(dv));
+  if (fazla) {
+    var a = ALAN[fazla.boyut];
+    s[a] = s[a].concat([fazla.deger.toLowerCase()]);
+  }
+  return s;
+}
 
 /* --------------------------------------------------------------------------
    Yardımcılar
@@ -223,27 +286,21 @@ function sayi(id, alt, ust, vars){
   if (isNaN(v)) return vars;
   return Math.min(ust, Math.max(alt, v));
 }
-function tempoAktif(){ return !(sayi("tpMin",0,300,0)===0 && sayi("tpMax",0,300,300)===300); }
-function detayAktif(){ return document.getElementById("detay").value.trim() !== ""; }
-function kullanilanPuan(){
-  var p = 0;
-  ["mood","islev","bolge","tur"].forEach(function(k){ if(secilenler("g-"+k).length>0) p += PUAN[k]; });
-  if (tempoAktif()) p += PUAN.tempo;
-  if (detayAktif()) p += PUAN.detay;
-  return p;
-}
+function istenen(){ return sayi("maks",1,MAKS_PARCA,15); }
 
 /* --------------------------------------------------------------------------
    Seçenek kutuları
    -------------------------------------------------------------------------- */
+function kutu(v){
+  var lab = document.createElement("label");
+  lab.className = "chip";
+  lab.innerHTML = '<input type="checkbox" value="'+v.replace(/"/g,"&quot;")+'">'
+                + '<span>'+v+'<i></i></span>';
+  return lab;
+}
 function kur(anahtar, kap){
   var el = document.getElementById(kap);
-  L[anahtar].forEach(function(v){
-    var lab = document.createElement("label");
-    lab.className = "chip";
-    lab.innerHTML = '<input type="checkbox" value="'+v.replace(/"/g,"&quot;")+'"><span>'+v+'</span>';
-    el.appendChild(lab);
-  });
+  L[anahtar].forEach(function(v){ el.appendChild(kutu(v)); });
   el.addEventListener("change", guncelle);
 }
 function kurBolge(){
@@ -253,15 +310,10 @@ function kurBolge(){
     var h = document.createElement("div");
     h.className = "gl"; h.textContent = g[0];
     el.appendChild(h);
-    var kutu = document.createElement("div");
-    kutu.className = "chips";
-    g[1].forEach(function(v){
-      var lab = document.createElement("label");
-      lab.className = "chip";
-      lab.innerHTML = '<input type="checkbox" value="'+v.replace(/"/g,"&quot;")+'"><span>'+v+'</span>';
-      kutu.appendChild(lab);
-    });
-    el.appendChild(kutu);
+    var k = document.createElement("div");
+    k.className = "chips";
+    g[1].forEach(function(v){ k.appendChild(kutu(v)); });
+    el.appendChild(k);
   });
   el.addEventListener("change", guncelle);
 }
@@ -270,9 +322,10 @@ function kurOrnekler(){
   var alan = document.getElementById("detay");
   ORNEKLER.forEach(function(v){
     var b = document.createElement("span");
-    b.className = "ornek"; b.textContent = v;
+    b.className = "ornek";
+    b.innerHTML = v + '<i></i>';
+    b.setAttribute("data-v", v);
     b.onclick = function(){
-      if (alan.disabled) return;
       alan.value = (alan.value === v) ? "" : v;
       guncelle();
     };
@@ -281,65 +334,103 @@ function kurOrnekler(){
 }
 
 /* --------------------------------------------------------------------------
-   Tek güncelleme noktası: boyut içi üst sınır + bütçe kilidi
+   Tek güncelleme noktası
    -------------------------------------------------------------------------- */
 function guncelle(){
-  var p = kullanilanPuan(), kalan = BUTCE - p;
+  var n = istenen();
 
+  /* boyut içi üst sınır */
   ["mood","islev","bolge","tur"].forEach(function(k){
-    var kap = "g-"+k, sec = secilenler(kap);
-    var kilit = sec.length === 0 && kalan < PUAN[k];
-    var dolu  = sec.length >= SINIR[k];
-    Array.prototype.slice.call(document.querySelectorAll("#"+kap+" input")).forEach(function(x){
-      x.disabled = kilit || (dolu && !x.checked);
+    var sec = secilenler("g-"+k), dolu = sec.length >= SINIR[k];
+    Array.prototype.slice.call(document.querySelectorAll("#g-"+k+" input")).forEach(function(x){
+      x.disabled = dolu && !x.checked;
     });
-    document.getElementById("k-"+k).className = kilit ? "card kilit" : "card";
+  });
+
+  if (!VERI_VAR) {
+    ["mood","islev","bolge","tur"].forEach(function(k){
+      var sec = secilenler("g-"+k);
+      document.getElementById("c-"+k).textContent =
+        sec.length === 0 ? "Hiçbiri seçili değil — fark etmez sayılacak." : sec.length + " seçili";
+    });
+    document.getElementById("c-detay").textContent =
+      document.getElementById("detay").value.trim() === "" ? "Boş — fark etmez sayılacak." : "Etkin.";
+    return;
+  }
+
+  var toplam = say(secimKur(null));
+
+  /* seçenek başına sayı + kilit */
+  ["mood","islev","bolge","tur"].forEach(function(k){
+    var sec = secilenler("g-"+k), dolu = sec.length >= SINIR[k];
+    Array.prototype.slice.call(document.querySelectorAll("#g-"+k+" input")).forEach(function(x){
+      var et = x.nextSibling.querySelector("i");
+      if (x.checked) { et.textContent = ""; x.disabled = false; return; }
+      var s = say(secimKur({ boyut:k, deger:x.value }));
+      et.textContent = s;
+      x.disabled = (dolu) || (s < n);
+    });
     var c = document.getElementById("c-"+k);
-    if (c) c.textContent = kilit ? "Bütçe dolu — bu filtre kilitli."
-      : (sec.length === 0 ? "Hiçbiri seçili değil — fark etmez sayılacak."
-        : sec.length + " seçili" + (dolu ? " (üst sınır)" : ""));
+    c.textContent = sec.length === 0
+      ? "Hiçbiri seçili değil — fark etmez sayılacak. Rakamlar: o seçeneği eklersen kaç parça kalır."
+      : sec.length + " seçili" + (dolu ? " (üst sınır)" : "");
   });
 
-  var tKilit = !tempoAktif() && kalan < PUAN.tempo;
-  document.getElementById("tpMin").disabled = tKilit;
-  document.getElementById("tpMax").disabled = tKilit;
-  document.getElementById("k-tempo").className = tKilit ? "card kilit" : "card";
-  document.getElementById("c-tempo").textContent = tKilit ? "Bütçe dolu — bu filtre kilitli."
-    : (tempoAktif() ? "Etkin — 1 puan harcıyor." : "Tam aralık — puan harcamıyor.");
-
-  var dKilit = !detayAktif() && kalan < PUAN.detay;
-  var alan = document.getElementById("detay");
-  alan.disabled = dKilit;
-  document.getElementById("k-detay").className = dKilit ? "card kilit" : "card";
-  document.getElementById("c-detay").textContent = dKilit
-    ? "Bütçede 2 puan yer yok — başka bir filtreyi kaldırırsan açılır."
-    : (detayAktif() ? "Etkin — 2 puan harcıyor." : "Boş — puan harcamıyor.");
+  /* Detay Tarz */
+  var alan = document.getElementById("detay"), dv = alan.value.trim();
+  var cd = document.getElementById("c-detay");
+  if (dv === "") {
+    cd.textContent = "Boş — fark etmez sayılacak.";
+    cd.style.color = "";
+  } else {
+    var bicim = esanlam(dv), s = toplam;
+    cd.textContent = s === 0
+      ? "\u201C" + dv + "\u201D için hiç parça yok — yazımı denetle ya da aşağıdakilerden birini seç."
+      : (s < n ? "Bu tarzla yalnız " + s + " parça uyuyor — istediğin " + n + "'den az."
+               : s + " parça uyuyor.")
+        + (bicim.length > 1 ? " (aranan biçimler: " + bicim.join(", ") + ")" : "");
+    cd.style.color = (s < n) ? "#ff8a80" : "";
+  }
   Array.prototype.slice.call(document.getElementById("ornekler").children).forEach(function(b){
-    b.className = (b.textContent === alan.value && !dKilit) ? "ornek sec" : "ornek";
-    b.style.opacity = dKilit ? .3 : 1;
+    var v = b.getAttribute("data-v");
+    b.className = (v === alan.value) ? "ornek sec" : "ornek";
+    if (v === alan.value) { b.querySelector("i").textContent = ""; }
+    else {
+      var s2 = {}; var t = secimKur(null);
+      s2[0]=t[0]; s2[1]=t[1]; s2[2]=t[2]; s2[3]=t[3]; s2[4]=kucult(esanlam(v));
+      b.querySelector("i").textContent = say(s2);
+    }
   });
 
-  var g = document.getElementById("butce");
-  g.className = (p >= BUTCE) ? "butce dolu" : "butce";
-  g.innerHTML = "Filtre bütçesi: " + p + " / " + BUTCE + (p >= BUTCE ? " — doldu" : "")
-    + '<span class="bar"><i style="width:' + Math.round(100*Math.min(p,BUTCE)/BUTCE) + '%"></i></span>'
-    + "<small>" + (p >= BUTCE
-        ? "Kalan filtreler kilitlendi. Değiştirmek için seçtiklerinden birini kaldır."
-        : "Çok fazla filtre listeyi boşaltır. Bütçe dolduğunda kalan filtreler kilitlenir.") + "</small>";
+  /* sayaç */
+  var g = document.getElementById("sayac");
+  g.className = (toplam < n) ? "sayac az" : "sayac";
+  document.getElementById("sayacBuyuk").textContent = toplam + " parça uyuyor";
+  document.querySelector("#sayac .bar i").style.width =
+    Math.round(100*Math.min(toplam, n)/Math.max(n,1)) + "%";
+  document.getElementById("sayacAlt").innerHTML = toplam >= n
+    ? "İstediğin " + n + " parça bu havuzdan seçilecek. Kütüphane: " + VERI.length
+      + " parça · " + VERI_TARIH
+    : "İstediğin " + n + " parçadan az. Ya parça sayısını düşür, ya bir filtreyi kaldır."
+      + " Kütüphane: " + VERI.length + " parça · " + VERI_TARIH;
 }
 
 kur("mood","g-mood"); kur("islev","g-islev"); kur("tur","g-tur"); kurBolge(); kurOrnekler();
-document.getElementById("tpMin").addEventListener("input", guncelle);
-document.getElementById("tpMax").addEventListener("input", guncelle);
 document.getElementById("detay").addEventListener("input", guncelle);
+document.getElementById("maks").addEventListener("input", guncelle);
+if (VERI_VAR) {
+  document.getElementById("sayac").className = "sayac";
+  document.getElementById("foot").textContent =
+    "Dünya Müziği Seçkisi · " + VERI.length + " parça · veri dilimi " + VERI_TARIH;
+}
 guncelle();
 
 /* --------------------------------------------------------------------------
-   Yük — anahtarlar Playlist hücre adlarıyla birebir
+   Yük — anahtarlar Playlist hücre adlarıyla birebir.
+   B12/B13 SABİT 0/300: Tempo arayüzden kaldırıldı ama Talepler sekmesindeki
+   ayrıştırma ve doğrulamalar bu iki alanı bekliyor.
    -------------------------------------------------------------------------- */
 function yukKur(){
-  var tpMin = sayi("tpMin",0,300,0), tpMax = sayi("tpMax",0,300,300);
-  if (tpMin > tpMax) { var t=tpMin; tpMin=tpMax; tpMax=t; }
   return {
     v: 1,
     ad:   document.getElementById("ad").value.trim(),
@@ -351,23 +442,23 @@ function yukKur(){
     C8:  secilenler("g-mood").join("; "),
     C9:  secilenler("g-islev").join("; "),
     B10: 1, B11: 5,
-    B12: tpMin, B13: tpMax,
+    B12: 0, B13: 300,
     B14: document.getElementById("detay").value.trim(),
-    B15: sayi("maks",1,MAKS_PARCA,15)
+    B15: istenen()
   };
 }
 function ozetCiz(y){
   function sat(k,v){ return "<div><b>"+k+"</b><span>"+(v===""||v==null?"—":v)+"</span></div>"; }
+  var ek = VERI_VAR ? sat("Uyan parça", say(secimKur(null))) : "";
   document.getElementById("ozet").innerHTML =
       sat("Ad", y.ad)
     + sat("Ruh hâli", y.C8)
     + sat("İşlev", y.C9)
     + sat("Bölge", y.C6)
     + sat("Ana tür", y.C7)
-    + sat("Tempo", y.B12 + " – " + y.B13 + " BPM")
     + sat("Özel tarz", y.B14)
-    + sat("Parça sayısı", y.B15)
-    + sat("Kullanılan bütçe", kullanilanPuan() + " / " + BUTCE);
+    + sat("İstenen parça", y.B15)
+    + ek;
 }
 function mesajKur(y){
   return "*D\u00fcnya M\u00fczi\u011fi Se\u00e7kisi \u2014 liste talebi*\n"
@@ -376,7 +467,6 @@ function mesajKur(y){
     + "\u0130\u015flev: " + (y.C9 || "\u2014") + "\n"
     + "B\u00f6lge: " + (y.C6 || "\u2014") + "\n"
     + "Ana t\u00fcr: " + (y.C7 || "\u2014") + "\n"
-    + "Tempo: " + y.B12 + "\u2013" + y.B13 + " BPM\n"
     + "\u00d6zel tarz: " + (y.B14 || "\u2014") + "\n"
     + "Par\u00e7a: " + y.B15 + "\n"
     + "\n" + IMZA + " " + JSON.stringify(y);
@@ -400,9 +490,6 @@ function hazirla(){
   return y;
 }
 
-/* --------------------------------------------------------------------------
-   Kopyalama — tek gönderme yolu
-   -------------------------------------------------------------------------- */
 document.getElementById("btnKopya").onclick = function(){
   var y = hazirla(); if (!y) return;
   var metin = mesajKur(y);
@@ -424,7 +511,6 @@ document.getElementById("btnSifirla").onclick = function(){
     .forEach(function(x){ x.checked=false; x.disabled=false; });
   ["ad","detay"].forEach(function(id){ document.getElementById(id).value=""; });
   document.getElementById("maks").value=15;
-  document.getElementById("tpMin").value=0; document.getElementById("tpMax").value=300;
   document.getElementById("out").className="out";
   hata(null); document.getElementById("ok").className="ok";
   guncelle();
