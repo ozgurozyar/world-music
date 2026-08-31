@@ -210,6 +210,31 @@ var ORNEKLER = ["Çöl Blues","Balkan Brass","Klezmer","Bluegrass","Tuareg Rock"
                 "Gnawa","Fado","Morna","Highlife"];
 
 /* ==========================================================================
+   ÖN-SINIRLI EŞLEŞTİRME — yalnız Detay Tarz için.
+
+   SORUN: eşleştirme alt dizgi aramasıydı, kısa terimler başka kelimelerin
+   İÇİNDE yakalanıyordu. Ölçüm: "Ney" 103 hücre buluyordu, gerçek Ney 23 —
+   gerisi Güney, Deneysel, Sydney, Sahneye. "Caz" hicaz makamını, "Piano"
+   amapiano'yu, "Harp" nyckelharpa'yı yakalıyordu.
+
+   ÇÖZÜM: ayrıcıları boşluğa çevir, terimi " "&terim olarak ara — yani terim
+   bir kelimenin BAŞINDA olmalı. Sınır YALNIZ BAŞTA: Türkçe sonek dilidir,
+   ön ek almaz; "Gitarı", "Cazı", "Electronica" meşrudur ve korunur. Çift
+   sınır denendi ve REDDEDİLDİ (Gitar 40, Caz 47, Ritim 18 meşru eşleşme
+   kaybediyordu; "Etki" teriminin 84 eşleşmesinin tamamı düşüyordu).
+
+   Ozgur_World!BO sütunu ve Playlist!O9:U9 AYNI kipi uygular. İkisi birlikte
+   değişmeli. 2026-08-30.
+   ========================================================================== */
+var AYIRICI = [";","/","-","+",",","(",")",".","'","&",":","\u2013","\"","\\","|","`"];
+function norm(s){
+  var x = (s+"");
+  for (var i=0;i<AYIRICI.length;i++) x = x.split(AYIRICI[i]).join(" ");
+  return x;
+}
+function kalip(t){ return (" " + norm(t)).toLowerCase(); }
+
+/* ==========================================================================
    VERİ DİLİMİ — data.js'ten. Yoksa sayfa sayaçsız ama çalışır durumda kalır.
    ========================================================================== */
 var VERI = [], GRUPLAR = [], VERI_VAR = false, VERI_TARIH = "";
@@ -222,8 +247,9 @@ var VERI = [], GRUPLAR = [], VERI_VAR = false, VERI_TARIH = "";
       if (s === "" || s.indexOf("/*") === 0) continue;
       var p = s.split("|");
       if (p.length < 5) continue;
+      /* 4. alan NORMALİZE + iki yanı boşluklu — ön-sınırlı arama için */
       VERI.push([p[0].toLowerCase(), p[1].toLowerCase(), p[2].toLowerCase(),
-                 p[3].toLowerCase(), p[4].toLowerCase()]);
+                 p[3].toLowerCase(), (" " + norm(p[4]) + " ").toLowerCase()]);
     }
     if (typeof OW_SYN === "string") {
       var hg = OW_SYN.split("\n");
@@ -240,9 +266,12 @@ var VERI = [], GRUPLAR = [], VERI_VAR = false, VERI_TARIH = "";
 
 /* ==========================================================================
    FİLTRE MOTORU — Ozgur_World!AV formülünün birebir karşılığı.
-   Eşleştirme EŞİTLİK DEĞİL, alt dizgi ve harf duyarsız (Excel'de SEARCH).
    Boyut içinde VEYA, boyutlar arası VE. Boş boyut geçer.
-   2026-08-30'da 160 rastgele bileşimde Excel'e karşı sınandı: 160/160.
+   Detay Tarz ÖN-SINIRLI; diğer dört boyut düz alt dizgi (kapalı listelerden
+   geldikleri için hayalet riski yok — Excel'de de öyle bırakıldı).
+   2026-08-30'da Excel'e karşı sınandı: 80 rastgele bileşim (57'si Detay
+   Tarz'lı) + 20 nişanlı test = 100/100. Ayrıca AV sütununda 2.332 satırlık
+   gerileme sınaması: 0 sapma.
    ========================================================================== */
 function bol(s){
   return (s+"").split(";").map(function(t){ return t.trim(); })
@@ -260,7 +289,6 @@ function esle(terimler, alan){
   for (var i=0;i<terimler.length;i++) if (alan.indexOf(terimler[i]) >= 0) return true;
   return false;
 }
-/* sec = {0:[bolge],1:[tur],2:[mood],3:[islev],4:[detay bicimleri]} — küçük harfli */
 function say(sec){
   var n = 0, k = [0,1,2,3,4], i, d, r, gec;
   for (i=0;i<VERI.length;i++){
@@ -273,11 +301,10 @@ function say(sec){
   }
   return n;
 }
-/* degistir = {boyut, deger} verilirse O BOYUT yalnzca o degerle degistirilir.
-   Boylece her secenegin yanindaki rakam "diger filtreler sabitken yalniz bu
-   secenek isaretliyse kac parca kalir" anlamina gelir. Kardes secenekler
-   isaretlendikce rakam ZIPLAMAZ — kumulatif olsa buyuyup kafa karistiriyordu
-   (2026-08-30, kullanici geri bildirimi). */
+/* degistir = {boyut, deger} verilirse O BOYUT yalnızca o değerle değiştirilir.
+   Böylece her seçeneğin yanındaki rakam "diğer filtreler sabitken yalnız bu
+   seçenek işaretliyse kaç parça kalır" anlamına gelir. Kardeş seçenekler
+   işaretlendikçe rakam ZIPLAMAZ — kümülatif olsa büyüyüp kafa karıştırıyordu. */
 function secimKur(degistir){
   var s = {};
   s[0] = kucult(secilenler("g-bolge"));
@@ -285,9 +312,10 @@ function secimKur(degistir){
   s[2] = kucult(secilenler("g-mood"));
   s[3] = kucult(secilenler("g-islev"));
   var dv = document.getElementById("detay").value.trim();
-  s[4] = dv === "" ? [] : kucult(esanlam(dv));
+  /* Detay Tarz ÖN-SINIRLI aranır */
+  s[4] = dv === "" ? [] : esanlam(dv).map(kalip);
   if (degistir) {
-    if (degistir.boyut === "detay") s[4] = kucult(esanlam(degistir.deger));
+    if (degistir.boyut === "detay") s[4] = esanlam(degistir.deger).map(kalip);
     else s[ALAN[degistir.boyut]] = [degistir.deger.toLowerCase()];
   }
   return s;
@@ -357,7 +385,7 @@ function kurOrnekler(){
    -------------------------------------------------------------------------- */
 function guncelle(){
   var n = istenen();
-  /* Filtre degisti — bekleyen onay artik gecersiz, paneli kapat. */
+  /* Filtre değişti — bekleyen onay artık geçersiz, paneli kapat. */
   var op = document.getElementById("onay");
   if (op) op.className = "onay";
 
@@ -387,9 +415,9 @@ function guncelle(){
     var sec = secilenler("g-"+k), dolu = sec.length >= SINIR[k];
     Array.prototype.slice.call(document.querySelectorAll("#g-"+k+" input")).forEach(function(x){
       var et = x.nextSibling.querySelector("i");
-      /* Sayim engellemez — yalniz bilgilendirir. Az sonuc veren secenek
-         KAPATILMAZ; kisi ustune baska secenek ekleyebilir. Uyari, Kopyala
-         aninda tek seferde sorulur. */
+      /* Sayım ENGELLEMEZ, yalnız bilgilendirir. Az sonuç veren seçenek
+         KAPATILMAZ; kişi üstüne başka seçenek ekleyebilir. Uyarı, Kopyala
+         anında tek seferde sorulur. */
       et.textContent = say(secimKur({ boyut:k, deger:x.value }));
       x.disabled = dolu && !x.checked;
     });
@@ -413,7 +441,7 @@ function guncelle(){
                : s + " parça uyuyor.")
         + (bicim.length > 1 ? " (aranan biçimler: " + bicim.join(", ") + ")" : "");
     cd.style.color = (s < n) ? "#ff8a80" : "";
-    /* Bu bir ENGEL degil: kisi devam edebilir, Kopyala aninda onay sorulur. */
+    /* Bu bir ENGEL değil: kişi devam edebilir, Kopyala anında onay sorulur. */
   }
   Array.prototype.slice.call(document.getElementById("ornekler").children).forEach(function(b){
     var v = b.getAttribute("data-v");
@@ -511,10 +539,9 @@ function hazirla(){
 }
 
 /* --------------------------------------------------------------------------
-   Kopyalama — sonuc istenen sayidan azsa ONCE onay sorulur.
-   Onay ayri bir tiklamayla veriliyor; bu ayni zamanda panoya yazma icin
-   TAZE bir kullanici hareketi saglar (bazi tarayicilar hareket olmadan
-   panoya yazmayi engelliyor).
+   Kopyalama — sonuç istenen sayıdan azsa ÖNCE onay sorulur.
+   Onay ayrı bir tıklamayla veriliyor; bu aynı zamanda panoya yazma için
+   TAZE bir kullanıcı hareketi sağlar.
    -------------------------------------------------------------------------- */
 function kopyala(){
   var y = hazirla(); if (!y) return;
