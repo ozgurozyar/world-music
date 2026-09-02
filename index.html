@@ -364,10 +364,32 @@ function kurBolge(){
   });
   el.addEventListener("change", guncelle);
 }
+/* Rozetlerin sırası ELLE tutulmaz — kütüphane değiştikçe bayatlıyordu.
+   Temel sayım = hiçbir filtre seçili değilken o terimin bulacağı parça sayısı.
+   Önbellekli: sıralama karşılaştırıcısı O(n log n) kez çağrılıyor, her
+   çağrıda 2.332 satır taranmasın. */
+var TEMEL = {};
+function temelSay(t){
+  if (TEMEL[t] === undefined) {
+    var s = {}; s[0]=[]; s[1]=[]; s[2]=[]; s[3]=[];
+    s[4] = esanlam(t).map(kalip);
+    TEMEL[t] = say(s);
+  }
+  return TEMEL[t];
+}
 function kurOrnekler(){
   var kap = document.getElementById("ornekler");
   var alan = document.getElementById("detay");
-  ORNEKLER.forEach(function(v){
+  var liste = ORNEKLER.slice();
+  if (VERI_VAR) {
+    /* Yalnız YÜKLEMEDE bir kez sırala. Her güncellemede sıralasak rozetler
+       seçim yaptıkça yerinden zıplardı. */
+    liste.sort(function(a,b){
+      var d = temelSay(b) - temelSay(a);
+      return d !== 0 ? d : a.localeCompare(b, "tr");
+    });
+  }
+  liste.forEach(function(v){
     var b = document.createElement("span");
     b.className = "ornek";
     b.innerHTML = v + '<i></i>';
