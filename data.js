@@ -16,7 +16,7 @@
    Parça adı ve URI BİLİNÇLİ OLARAK YOK — bu dosya herkese açık duruyor.
    ========================================================================== */
 
-var OW_TARIH = "2026-08-30";
+var OW_TARIH = "2026-08-31";
 
 var OW_ROWS = `
 /* --- G SÜTUNU BURAYA --- */
@@ -2375,7 +2375,7 @@ Klarnet;Clarinet
 Flüt;Flute
 Nefesli;Brass
 Vokal;Vocal;Vocals
-Çöl Blues;Desert Blues
+Çöl Blues;Desert Blues;Tuareg Rock;Assouf;Tuareg
 Geleneksel;Traditional
 Füzyon;Fusion
 Davul;Drums
@@ -2385,6 +2385,8 @@ Oda Müziği;Chamber
 Topluluk;Ensemble
 Ritim;Rhythms
 Etki;Influence
+Chaabi;Chaâbi
+Mande;Mandé
 
 /* --- I SÜTUNU BİTTİ --- */
 `;
