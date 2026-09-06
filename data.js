@@ -16,7 +16,7 @@
    Parça adı ve URI BİLİNÇLİ OLARAK YOK — bu dosya herkese açık duruyor.
    ========================================================================== */
 
-var OW_TARIH = "2026-08-31";
+var OW_TARIH = "2026-09-06";
 
 var OW_ROWS = `
 /* --- G SÜTUNU BURAYA --- */
@@ -677,7 +677,6 @@ Western Europe|Elektronik|Neşe|Dans; Spor|Indie Pop; Deneysel Folk; Elektronik
 Western Europe|Funk/Soul|Dinginlik|Yolculuk|Nyah-Rock; Britanya Funk'ı; Karayip Diasporası
 Western Europe|Gelenek; Vokal/Şarkı|Melankoli|Dans; Spor|İngiliz Folk Geleneği; Carthy Hattı
 Western Europe; Latin America; Fusion|Elektronik|Neşe|Odak; Yolculuk|Kolombiya Pasifik Geleneği; Dub; Currulao
-Latin America|Elektronik|Karanlık|Dans; Yolculuk|Deneysel Elektronik; Other People; New York-Santiago
 Western Europe|Caz; Elektronik|Neşe|Dans; Spor|Ambient Jazz; Electronic Jazz
 Western Europe|Caz|Neşe|Gece; Yolculuk|Folk-Hop; Swing; Sokak Cazı
 Latin America|Pop/Şarkı-Yazarı; Caz|Neşe|Dans; Spor|Bossa Nova + Amerikan Pop; Brasil '66
@@ -1965,7 +1964,7 @@ Western Europe|Gelenek|Neşe|Dans; Spor|Poitou Balfolk; Akordeon/Keman; Dans Mü
 Balkans|Caz|Melankoli|Yolculuk; Spor|Sevdah; Roman Müziği; Balkan Caz
 East Africa|Caz|Neşe|Odak; Yolculuk; Spor|Ethio-Jazz'ın Kurucusu; Vibrafon; Addis Ababa
 Northern Europe; West Africa; Fusion|Tel/Enstrümantal; Gelenek|Neşe|Odak|İsveç Flütü + Ngoni; Mande Geleneği; Sınırlararası Akustik Düet
-Levant; North America; Fusion|Elektronik; Gelenek|Melankoli|Dans; Yolculuk|Middle Eastern Folk; Electronic Remix; Cross-Cultural Groove
+||Melankoli|Dans; Yolculuk|
 North Africa; North America|Gelenek; Vokal/Şarkı|Neşe|Dans; Gece|Chaâbi + Flamenko/Rumba; Montreal
 Western Europe; North America; Fusion|Caz; Elektronik|Dinginlik|Odak; Gece|Piano Fusion; Modern Jazz; Ambient Groove
 Northern Europe; Levant; Fusion|Vokal/Şarkı; Caz|Dinginlik|Yolculuk|Muvaşşah; Oud-Vokal; Mikrotonal Piyano
@@ -2259,7 +2258,6 @@ South Asia|Gelenek; Vokal/Şarkı|Neşe|Dans; Yolculuk; Spor|Manganiyar Geleneğ
 North America; West Africa; Fusion|Psikedelik/Rock; Gelenek|Epik|Odak; Yolculuk; Spor|Mali Vokali + Psikedelik Rock; Oakland
 Southeast Asia; Fusion|Psikedelik/Rock; Funk/Soul|Epik|Odak|Tropikal Çöl Müziği; Keroncong; Dangdut; Orta Doğu Groove'ları; Afro-Funk; Enstrümantal
 Balkans; Fusion|Reggae/Dub; Nefesli/Bando|Neşe|Dans; Spor|Balkan Dub; Gypsy Brass; Bulgar Koro; Asphalt Tango
-Western Europe|Elektronik|Neşe|Dans; Odak; Spor|Enstrümantal Elektronik; Asya-Ortadoğu Sample; Psikedelik
 Latin America|Tel/Enstrümantal; Caz|Melankoli|Odak|Bossa Nova; Afro-Samba; Klasik Gitar Tekniği
 North America|Psikedelik/Rock|Karanlık|Dans|Gothic Americana; Alt-Country; Appalachian Revival
 North America|Psikedelik/Rock|Karanlık|Dans; Odak; Spor|Gothic Americana; Alt-Country; Appalachian Revival
@@ -2352,6 +2350,82 @@ North Africa|Vokal/Şarkı|Melankoli|Gece|Cezayir Şarkı Geleneği; Folk; Chaâ
 West Africa|Funk/Soul|Melankoli|Dans; Yolculuk; Spor|Ghanaian Highlife; Afro-Funk; Dance Band; Guitar Groove
 Oceania|Funk/Soul; Caz|Dinginlik|Odak; Yolculuk|Sinematik Soul; Library Müziği Estâtiği; Melbourne Sahnesi
 Balkans|Pop/Şarkı-Yazarı|Dinginlik|Gece|Yunan Indie-Folk; İngilizce/Yunanca Söz
+Anatolia|Caz|Epik|Yolculuk; Spor|Anadolu Cazı; Perküsyon; Serbest Doğaçlama
+Latin America|Pop/Şarkı-Yazarı|Karanlık|Dans; Spor|MPB; Somut Şiir; Titãs Geçmişi; Söz Odaklı Şarkı
+Latin America|Pop/Şarkı-Yazarı|Romantik|Dans; Spor|Meksika Şarkı-Yazarlığı; İkili Vokal; Akustik Düzen; Söz Odaklı
+Western Europe; Latin America; Iberia; Fusion|Gelenek; Funk/Soul|Neşe|Dans; Odak|Cumbia; Latin Funk; Afrobeat; Tropikal Psikedelya; Boogaloo; Küresel Dans Groove'u
+North America; Iranian World; Fusion|Psikedelik/Rock; Funk/Soul|Romantik|Odak|1970'ler Fars Psikedelyası; Funk; Surf Gitar; Sinematik Western Gitarları; İran-Amerikan Füzyonu
+Central Africa|Vokal/Şarkı|Romantik|Dans|Kamerun Şarkısı; Bamiléké Repertuvarı; Akustik Gitar; Bikutsi ve Assiko Etkisi
+West Africa|Gelenek; Elektronik|Karanlık|Dans; Yolculuk; Spor|Funaná; Coladeira; Kabo Verde Diasporası; Sampling; Saha Kayıtları; Elektronik Füzyon
+Latin America|Gelenek; Tel/Enstrümantal|Melankoli|Dans; Gece|Orquesta Típica Geleneği; Bandoneón; Tango Aktarımı; Buenos Aires
+Western Europe; Latin America; Fusion|Gelenek; Tel/Enstrümantal|Melankoli|Odak; Yolculuk|Çağdaş Tango; Kadın Orkestrası; Deneysel ve Post-Minimalist Etkiler; Caz; Paris
+Latin America|Gelenek; Tel/Enstrümantal|Melankoli|Odak; Yolculuk|Tango Nuevo; Çağdaş Tango Bestesi; Bandoneón; Buenos Aires
+Levant; Western Europe; Caribbean|Caz|Romantik|Dans; Odak; Yolculuk|Çeyrek Tonlu Trompet; Arap Makamı + Caz; Kuba Piyanosu; İkili Düzen
+Mediterranean Europe; Western Europe; North Africa; Fusion|Funk/Soul; Psikedelik/Rock|Dinginlik|Odak; Yolculuk|Funk; Afrika Müziği Etkileri; Blues; Psikedelik Rock; Caz; Groove
+Northern Europe|Pop/Şarkı-Yazarı|Dinginlik|Gece|İrlanda Şarkı-Yazarlığı; Çağdaş Folk; Açık Akort Gitar; Kamara Düzeni
+North Africa|Tel/Enstrümantal|Dinginlik|Odak; Gece; Yolculuk|Ud; Endelüs/Mağrip Repertuvarı; 3MA
+Latin America|Gelenek; Elektronik|Dinginlik|Dans; Odak|Güney Amerika Halk Müziği; And Ezgileri; Canlı Loop; Geleneksel Ahşap Çalgılar; Elektro-Akustik
+Western Europe|Funk/Soul; Psikedelik/Rock|Neşe|Dans; Odak; Yolculuk; Spor|Afrobeat; Funk; Psikedelik Groove; Indie; Disko
+Western Europe; Latin America; Fusion|Tel/Enstrümantal|Dinginlik|Dans; Odak; Yolculuk|Enstrümantal Çöl Gitarı; İki Kardeş; Easy Eye Sound
+Latin America|Elektronik|Dinginlik|Dans; Odak; Yolculuk|Dijital Cumbia; ZZK Sahnesi; And Perküsyonu; Remiks
+North America|Klasik/Modern Klasik; Tel/Enstrümantal|Melankoli|Gece|Soprano; Banjo; Çevreci Program; Kamara Düzeni
+North America|Gelenek|Neşe|Dans; Spor|Québec Halk Müziği; Podorythmie; Kemençe ve Akordeon; Aile Topluluğu
+Mediterranean Europe|Gelenek|Karanlık|Dans|Pizzica; Salento Repertuvarı; Tamburello; Tarantismo Geleneği
+Eastern Europe|Gelenek; Vokal/Şarkı|Melankoli|Dans; Spor|Slovak Halk Şarkıları; Doğu Avrupa Gelenekleri; Çok Sesli Kadın Vokali; Dünya Geleneksel Şarkıları
+Eastern Europe|Gelenek; Psikedelik/Rock|Neşe|Dans; Yolculuk; Spor|Roman Müziği; Macar Halk Repertuvarı; Freak-Folk; Kemençe ve Kanal Ritmi
+North America; Eastern Europe; Fusion|Gelenek; Vokal/Şarkı|Dinginlik|Dans; Gece|Doğu Avrupa Köy Şarkıları; Bandura; Viyola; Kadın Vokal Geleneği; Folk-Punk
+Western Europe|Klasik/Modern Klasik; Tel/Enstrümantal|Dinginlik|Odak; Gece; Yolculuk|Klasik Gitar; Neo-Klasik; Post-Minimalizm; Çağdaş Beste; Caz Etkisi
+Mediterranean Europe; Balkans; Fusion|Gelenek; Klasik/Modern Klasik|Melankoli|Gece; Yolculuk|Sevdalinka; Yaylı Dörtlüsü; Çağdaş Oda Müziği; Balkan Mirası
+Western Europe|Gelenek; Nefesli/Bando|Neşe|Dans; Odak; Yolculuk; Spor|Klezmer + Balkan; Sokak Bandosu; Amsterdam
+Levant; North Africa|Gelenek; Vokal/Şarkı|Romantik|Dans; Yolculuk; Spor|Arap Klasik Repertuvarı; Muvvaşah; Kanun-Ud-Ney Takdimi; Kâhire Stüdyo Kadrosu
+North Africa; Western Europe|Elektronik; Vokal/Şarkı|Epik|Yolculuk|Arabic Fusion; Trip-Hop; Orkestral Arap Pop; Keman Aranümanı
+Western Europe|Hip-Hop/Rap|Neşe|Dans; Spor|Fransız Rap'i; Boom-Bap; Sinematik Üretim; Bağımsız Sahne
+Western Europe; Latin America; Fusion|Tel/Enstrümantal; Pop/Şarkı-Yazarı|Dinginlik|Odak; Gece|Akustik Gitar; Şifa/Medicine Music; Latin Amerika Etkileri; Doğa Temaları; Vokal
+Iranian World|Gelenek; Vokal/Şarkı|Dinginlik|Gece; Yolculuk|Fars Klasik Vokali; Radif; İranlı Kadın Solist; Tasnif ve Avaz
+Levant; Caucasus; Oceania; Fusion|Gelenek; Caz|Dinginlik|Dans; Odak|Ermeni Halk Müziği; Etno-Caz; Klasik Etkiler; Piyano Merkezli Beşli; Doğaçlama
+Levant; North America|Caz|Romantik|Odak; Yolculuk|Kontrbas; Ortadoğu Ezgileri + Caz; New York; Klarnet
+Western Europe; Latin America; Fusion|Gelenek; Psikedelik/Rock|Neşe|Dans; Odak|Afro-Kolombiya Ritimleri; Cumbia; Bullerengue; Champeta; Chirimía; Psikedelik Rock
+Western Europe|Caz; Elektronik|Dinginlik|Odak|Minimalizm; Spiritüel Caz; Gamelan; Elektronik; Poliritmik Yapılar; Çağdaş Klasik Etkiler
+Western Europe; Levant; Fusion|Psikedelik/Rock; Vokal/Şarkı|Romantik|Dans; Yolculuk; Spor|Akdeniz Rock; 1970'ler Fuzz Rock; Arap Buzuk; Blues; Çok Dilli Vokal
+North America; Iranian World; Levant|Tel/Enstrümantal; Elektronik|Dinginlik|Dans; Odak; Yolculuk|Santûr; Serbest Doğaçlama; Ambient Dünya Müziği; Fretless Bas
+North America; Balkans; Fusion|Gelenek; Vokal/Şarkı|Melankoli|Gece|Sevdalinka; Batı Balkan Vokal Geleneği; Piyano-Vokal Düeti; Doğaçlama
+North America; Latin America; West Africa; Fusion|Funk/Soul; Psikedelik/Rock|Neşe|Dans; Spor|Enstrümantal Gitar; Chicha/Tuareg/Son Montuno; New Orleans
+Iranian World; Northern Europe; Fusion|Psikedelik/Rock; Elektronik|Karanlık|Dans; Odak; Spor|Fars Psikedelik Rock; Bandari; Hip-Hop; Afrika Ritimleri; Organik Elektronik
+North Africa|Gelenek; Vokal/Şarkı|Neşe|Dans; Yolculuk|Raï; Cezayir Pop'u; Vokal
+Western Europe; Latin America; Fusion|Elektronik|Melankoli|Dans; Odak|Elektro-Tango; Downtempo
+North Africa|Gelenek; Vokal/Şarkı|Romantik|Gece; Yolculuk|Yahudi-Arap Chaabi; Arap-Endülüs Müziği; Cezayir Şarkı Geleneği; Latin Dans Etkileri
+Iberia|Vokal/Şarkı|Romantik|Dans|Yeni Flamenko; Roman Vokal; Nuevo Flamenco Kurucuları
+Balkans|Nefesli/Bando; Gelenek|Neşe|Yolculuk; Spor|Roman Köy Orkestrası; Balkan Brass; Çoček
+Western Europe; Balkans|Klasik/Modern Klasik|Dinginlik|Odak; Yolculuk|Karşılaştırmalı Yeniden Okuma; Orkestral Aranüman; Bulgar Yaylıları; Mozart Uyarlaması
+Levant|Caz; Tel/Enstrümantal|Dinginlik|Odak; Yolculuk|Ud; Arap Cazı; Kamara Füzyon; Makam
+Latin America|Vokal/Şarkı|Romantik|Gece|Bolero; Ranchera; Latin Amerika Şarkı Geleneği; Nueva Canción
+North Africa|Gelenek|Melankoli|Yolculuk|Sa'idi Geleneği; Rebaba; Mizmar; Nil Vadisi; Gawazee
+Southeast Asia|Gelenek|Neşe|Dans; Odak; Spor|Sunda Gamelanı; Kendang; Kacapi-Suling; Cava Batısı
+Iberia|Gelenek|Neşe|Dans; Odak; Yolculuk; Spor|Flamenko; Utrera Ekolü; Kuba Tres Gitarı
+Caribbean|Vokal/Şarkı|Neşe|Dans; Yolculuk|Son Cubano; Bolero; Kuba Geleneği
+East & Central Asia|Gelenek; Vokal/Şarkı|Dinginlik|Yolculuk|Tibet Vokali; Solo Şarkı; Manevi Repertuvar; Refakatsız Ses
+Iberia|Vokal/Şarkı|Romantik|Dans; Gece|Copla; İspanyol Şarkı Geleneği; Latin Amerika Repertuvarı; Los Gemelos Gitarları
+Eastern Europe|Gelenek; Funk/Soul|Neşe|Dans; Odak; Spor|Moldva ve Gyimes Halk Müziği; Táncház; Ethno Funk; Koboz; Flüt; Psikedelik Rock Etkisi
+North Africa|Pop/Şarkı-Yazarı|Neşe|Dans; Spor|Kabil Şarkısı; Tamazight Söz; Akustik Gitar; Göçmen Repertuvarı
+North Africa|Elektronik|Neşe|Yolculuk|Raï Rock; Elektronik Chaâbi; Punk
+Levant|Vokal/Şarkı|Melankoli|Gece|Arap Şarkı Geleneği; Rahbani Besteleri; Beyrut
+North America|Gelenek; Vokal/Şarkı|Neşe|Dans|Klezmer; Yiddish Song; Jewish Roots
+North Africa; Levant|Gelenek; Vokal/Şarkı|Epik|Spor|Yahudi-Fas Repertuvarı; Arap-Endülüs Müziği; Piyyut; Mawwal; Hazanlık
+Iberia|Gelenek; Hip-Hop/Rap|Neşe|Dans; Spor|Flamenko Füzyon; Rap/Ragga; Barselona
+Iberia|Gelenek|Neşe|Dans; Yolculuk|İspanyol Halk Repertuvarı; Alan Kayıtları; Perküsyon; Jota ve Seguidilla
+North Africa|Gelenek; Vokal/Şarkı|Romantik|Dans; Yolculuk; Spor|Arap Klasik Repertuvarı; Kâhire Stüdyo Kadrosu; Perküsyon; Orkestral Arap Pop
+Iberia; Western Europe|Pop/Şarkı-Yazarı|Neşe|Dans; Spor|Mestizo; Rumba; Latin Füzyon; Ska Etkisi
+West Africa|Vokal/Şarkı; Funk/Soul|Neşe|Dans; Spor|Benin Vokali; Afro-Pop; Uluslararası İşbirlikleri
+North America|Blues|Neşe|Dans; Spor|Vokal Blues; Caz Standardı; Oakland Sahnesi; İkili Düzen
+Iranian World|Caz|Karanlık|Yolculuk; Spor|Afgan Halk Müziği; Deneysel; Politik Caz
+Levant; Western Europe; Fusion|Gelenek; Caz|Dinginlik|Gece; Yolculuk|Ud; Arap Makamı; Çağdaş Caz; Klasik Kontrpuan; Vokal; Doğaçlama
+Levant; North Africa|Gelenek; Vokal/Şarkı|Melankoli|Dans; Spor|Yahudi-Marok Repertuvarı; Endülüs; Chaabi; Amazigh Gelenekleri; Marok Arapçası
+Western Europe; Latin America; Fusion|Funk/Soul; Nefesli/Bando|Neşe|Dans; Odak; Yolculuk; Spor|Afro-Latin Groove; Tropikal Ritimler; Latin Caz; Nefesliler; Post-Tropikal
+Western Europe; Fusion|Nefesli/Bando|Melankoli|Odak; Gece|Deneysel Akustik; Ev Yapımı Çalgılar; Perküsyon; Nefesliler; Karnaval/Samba Etkileri; Trans Groove
+Northern Europe|Hip-Hop/Rap; Elektronik|Karanlık|Gece|İrlandaca Alternatif; Hip-Hop; Trip-Hop; Indie; R&B; Elektronik Dans Müziği
+Caribbean|Reggae/Dub|Neşe|Dans; Spor|Dancehall; Roots Reggae; Vokal
+Southeast Asia|Gelenek; Psikedelik/Rock|Epik|Odak; Yolculuk; Spor|Elektrikli Phin; Tayland Köy/Tören Müziği; Psikedelik Rock; Geçit Töreni; Molam Çevresi
+Eastern Europe|Klasik/Modern Klasik; Caz|Epik|Dans; Odak; Yolculuk; Spor|Kontrtenör; Barok Doğaçlama; Piyano-Ses Düzeni; Bach Yeniden Okuması
 
 /* --- G SÜTUNU BİTTİ --- */
 `;
